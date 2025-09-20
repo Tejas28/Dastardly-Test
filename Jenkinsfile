@@ -11,12 +11,16 @@ pipeline {
         stage ("Docker run Dastardly from Burp Suite Scan") {
             steps {
                 cleanWs()
-                sh '''
-                    docker run --user $(id -u) -v ${WORKSPACE}:${WORKSPACE}:rw \
-                    -e BURP_START_URL=https://dev-mdashboard.dev.gokwik.in/login#
-                    -e BURP_REPORT_FILE_PATH=${WORKSPACE}/dastardly-report.xml \
-                    public.ecr.aws/portswigger/dastardly:latest
-                '''
+            
+                    sh '''
+  docker run --user "$(id -u):$(id -g)" --rm \
+    -v "${WORKSPACE}:/dastardly" \
+    -e "DASTARDLY_TARGET_URL=https://dev-mdashboard.dev.gokwik.in/login#" \
+    -e "DASTARDLY_OUTPUT_FILE=/dastardly/dastardly-report.xml" \
+    public.ecr.aws/portswigger/dastardly:latest
+'''
+
+                
             }
         }
     }
