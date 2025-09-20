@@ -13,7 +13,7 @@ pipeline {
                 cleanWs()
                 sh '''
                     docker run --user $(id -u) -v ${WORKSPACE}:${WORKSPACE}:rw \
-                    -e BURP_START_URL=https://awsstgqa.tallysolutions.com\
+                    -e BURP_START_URL=https://dev-mdashboard.dev.gokwik.in/login#
                     -e BURP_REPORT_FILE_PATH=${WORKSPACE}/dastardly-report.xml \
                     public.ecr.aws/portswigger/dastardly:latest
                 '''
